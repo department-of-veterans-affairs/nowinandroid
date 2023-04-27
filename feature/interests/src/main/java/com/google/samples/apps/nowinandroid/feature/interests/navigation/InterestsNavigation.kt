@@ -41,6 +41,5 @@ fun NavGraphBuilder.interestsGraph(
         composable(route = interestsRoute) {
             InterestsRoute(onTopicClick)
         }
-        nestedGraphs()
     }
 }
