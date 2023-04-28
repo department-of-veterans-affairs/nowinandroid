@@ -16,7 +16,6 @@
 
 package com.google.samples.apps.nowinandroid.ui
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -188,7 +187,7 @@ fun NiaApp(
                         )
                     }
 
-                    NiaNavHost(appState, Modifier.fillMaxSize())
+                    NiaNavHost(appState, snackbarHostState, Modifier.fillMaxSize())
                 }
             }
         }

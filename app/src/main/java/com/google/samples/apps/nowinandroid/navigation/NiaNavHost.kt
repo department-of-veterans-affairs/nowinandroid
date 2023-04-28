@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.navigation
 
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
@@ -38,6 +39,7 @@ import com.google.samples.apps.nowinandroid.ui.NiaAppState
 @Composable
 fun NiaNavHost(
     appState: NiaAppState,
+    snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     startDestination: String = forYouNavigationRoute,
 ) {
@@ -48,16 +50,19 @@ fun NiaNavHost(
         modifier = modifier,
     ) {
         forYouScreen(onTopicClick = navController::navigateToInterests)
-        bookmarksScreen(onTopicClick = navController::navigateToInterests)
+        bookmarksScreen(
+            onTopicClick = navController::navigateToInterests,
+            snackbarHostState = snackbarHostState,
+        )
         searchScreen(
             onBackClick = navController::popBackStack,
             onInterestsClick = navController::navigateToInterests,
-            onTopicClick = navController::navigateToInterests
+            onTopicClick = navController::navigateToInterests,
         )
         interestsGraph(
             shouldShowTwoPane = appState.shouldShowTwoPane,
             onTopicClick = navController::navigateToInterests,
-            onBackClick = navController::navigateToInterests
+            onBackClick = navController::navigateToInterests,
         )
     }
 }
