@@ -109,6 +109,9 @@ class NiaAppState(
     val shouldShowNavRail: Boolean
         get() = !shouldShowBottomBar
 
+    val shouldShowTwoPane: Boolean
+        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded
+
     val isOffline = networkMonitor.isOnline
         .map(Boolean::not)
         .stateIn(

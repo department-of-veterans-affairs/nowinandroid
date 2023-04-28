@@ -28,20 +28,26 @@ const val interestsRoute = "interests_route?$topicIdArg={$topicIdArg}"
 
 fun NavController.navigateToInterests(
     selectedTopicId: String? = null,
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
-    this.navigate("interests_route?$topicIdArg=$selectedTopicId", navOptions)
+    if (selectedTopicId != null) {
+        navigate("interests_route?$topicIdArg=$selectedTopicId", navOptions)
+    } else {
+        navigate("interests_route", navOptions)
+    }
 }
 
 fun NavGraphBuilder.interestsGraph(
-    onTopicClick: (String) -> Unit
+    shouldShowTwoPane: Boolean,
+    onTopicClick: (String) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     composable(
         route = interestsRoute,
         arguments = listOf(
-            navArgument(topicIdArg) { nullable = true }
-        )
+            navArgument(topicIdArg) { nullable = true },
+        ),
     ) {
-        InterestsRoute(onTopicClick)
+        InterestsRoute(shouldShowTwoPane, onTopicClick, onBackClick)
     }
 }

@@ -17,9 +17,14 @@
 package com.google.samples.apps.nowinandroid.feature.interests
 
 import com.google.samples.apps.nowinandroid.core.model.data.FollowableTopic
+import com.google.samples.apps.nowinandroid.core.model.data.UserNewsResource
 
 sealed interface TopicUiState {
-    data class Success(val followableTopic: FollowableTopic) : TopicUiState
+    data class Success(
+        val followableTopic: FollowableTopic,
+        val newsResources: List<UserNewsResource>,
+    ) : TopicUiState
+
     object Error : TopicUiState
     object Loading : TopicUiState
 }

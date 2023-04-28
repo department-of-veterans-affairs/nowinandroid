@@ -47,16 +47,17 @@ fun NiaNavHost(
         startDestination = startDestination,
         modifier = modifier,
     ) {
-        // TODO: handle topic clicks from each top level destination
-        forYouScreen(onTopicClick = {})
-        bookmarksScreen(onTopicClick = {})
+        forYouScreen(onTopicClick = navController::navigateToInterests)
+        bookmarksScreen(onTopicClick = navController::navigateToInterests)
         searchScreen(
             onBackClick = navController::popBackStack,
-            onInterestsClick = { appState.navigateToTopLevelDestination(INTERESTS) },
+            onInterestsClick = navController::navigateToInterests,
             onTopicClick = navController::navigateToInterests
         )
         interestsGraph(
-            onTopicClick = navController::navigateToInterests
+            shouldShowTwoPane = appState.shouldShowTwoPane,
+            onTopicClick = navController::navigateToInterests,
+            onBackClick = navController::navigateToInterests
         )
     }
 }
