@@ -31,6 +31,7 @@ import com.google.samples.apps.nowinandroid.core.model.data.FollowableTopic
 
 @Composable
 fun TopicsTabContent(
+    selectedTopicId: String?,
     topics: List<FollowableTopic>,
     onTopicClick: (String) -> Unit,
     onFollowButtonClick: (String, Boolean) -> Unit,
@@ -47,6 +48,7 @@ fun TopicsTabContent(
             val topicId = followableTopic.topic.id
             item(key = topicId) {
                 InterestsItem(
+                    isSelected = selectedTopicId == topicId,
                     name = followableTopic.topic.name,
                     following = followableTopic.isFollowed,
                     description = followableTopic.topic.shortDescription,

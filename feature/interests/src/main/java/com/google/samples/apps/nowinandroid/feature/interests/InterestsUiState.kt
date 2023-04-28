@@ -23,6 +23,7 @@ sealed interface InterestsUiState {
 
     data class Interests(
         val topics: List<FollowableTopic>,
+        val selectedTopicId: String?
     ) : InterestsUiState
 
     object Empty : InterestsUiState

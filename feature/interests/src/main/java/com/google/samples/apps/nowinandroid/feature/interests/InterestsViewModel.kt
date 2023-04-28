@@ -57,9 +57,12 @@ class InterestsViewModel @Inject constructor(
     }
 
     val interestUiState: StateFlow<InterestsUiState> =
-        getFollowableTopics(sortBy = TopicSortField.NAME).map(
-            InterestsUiState::Interests,
-        ).stateIn(
+        getFollowableTopics(sortBy = TopicSortField.NAME).map {
+            InterestsUiState.Interests(
+                topics = it,
+                selectedTopicId = topicId
+            )
+        }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = InterestsUiState.Loading,

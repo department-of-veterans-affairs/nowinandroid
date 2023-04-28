@@ -50,6 +50,7 @@ internal fun InterestsScreen(
                 )
             is InterestsUiState.Interests ->
                 TopicsTabContent(
+                    selectedTopicId = uiState.selectedTopicId,
                     topics = uiState.topics,
                     onTopicClick = onTopicClick,
                     onFollowButtonClick = followTopic,
@@ -77,6 +78,7 @@ fun InterestsScreenPopulated(
             InterestsScreen(
                 uiState = InterestsUiState.Interests(
                     topics = followableTopics,
+                    selectedTopicId = null
                 ),
                 followTopic = { _, _ -> },
                 onTopicClick = {},

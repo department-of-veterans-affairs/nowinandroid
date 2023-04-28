@@ -299,6 +299,7 @@ private fun SearchResultBody(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         )
         TopicsTabContent(
+            selectedTopicId = null,
             topics = topics,
             onTopicClick = {
                 // Pass the current search query to ViewModel to save it as recent searches

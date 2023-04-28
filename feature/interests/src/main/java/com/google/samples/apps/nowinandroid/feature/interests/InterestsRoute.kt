@@ -31,22 +31,22 @@ internal fun InterestsRoute(
     modifier: Modifier = Modifier,
     viewModel: InterestsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.interestUiState.collectAsStateWithLifecycle()
+    val interestUiState by viewModel.interestUiState.collectAsStateWithLifecycle()
     val topicUiState by viewModel.topicUiState.collectAsStateWithLifecycle()
 
     Row(modifier = modifier) {
         if(shouldShowTwoPane || topicUiState == null) {
             InterestsScreen(
-                uiState = uiState,
+                uiState = interestUiState,
                 followTopic = viewModel::followTopic,
                 onTopicClick = onTopicClick,
                 modifier = Modifier.weight(1f),
             )
         }
 
-        topicUiState?.let { topic ->
+        topicUiState?.let { state ->
             TopicScreen(
-                topicUiState = topic,
+                topicUiState = state,
                 onBackClick = onBackClick,
                 onFollowClick = { },
                 onTopicClick = { },
