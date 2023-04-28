@@ -132,6 +132,27 @@ fun NiaApp(
                 contentColor = MaterialTheme.colorScheme.onBackground,
                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
                 snackbarHost = { SnackbarHost(snackbarHostState) },
+                topBar = {
+                    val destination = appState.currentTopLevelDestination
+                    if (destination != null) {
+                        NiaTopAppBar(
+                            titleRes = destination.titleTextId,
+                            navigationIcon = NiaIcons.Search,
+                            navigationIconContentDescription = stringResource(
+                                id = settingsR.string.top_app_bar_navigation_icon_description,
+                            ),
+                            actionIcon = NiaIcons.Settings,
+                            actionIconContentDescription = stringResource(
+                                id = settingsR.string.top_app_bar_action_icon_description,
+                            ),
+                            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                                containerColor = Color.Transparent,
+                            ),
+                            onActionClick = { appState.setShowSettingsDialog(true) },
+                            onNavigationClick = { appState.navigateToSearch() },
+                        )
+                    }
+                },
                 bottomBar = {
                     if (appState.shouldShowBottomBar) {
                         val unreadDestinations by appState.topLevelDestinationsWithUnreadResources.collectAsStateWithLifecycle()
@@ -167,33 +188,7 @@ fun NiaApp(
                         )
                     }
 
-                    Column(Modifier.fillMaxSize()) {
-                        // Show the top app bar on top level destinations.
-                        val destination = appState.currentTopLevelDestination
-                        if (destination != null) {
-                            NiaTopAppBar(
-                                titleRes = destination.titleTextId,
-                                navigationIcon = NiaIcons.Search,
-                                navigationIconContentDescription = stringResource(
-                                    id = settingsR.string.top_app_bar_navigation_icon_description,
-                                ),
-                                actionIcon = NiaIcons.Settings,
-                                actionIconContentDescription = stringResource(
-                                    id = settingsR.string.top_app_bar_action_icon_description,
-                                ),
-                                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                                    containerColor = Color.Transparent,
-                                ),
-                                onActionClick = { appState.setShowSettingsDialog(true) },
-                                onNavigationClick = { appState.navigateToSearch() },
-                            )
-                        }
-
-                        NiaNavHost(appState)
-                    }
-
-                    // TODO: We may want to add padding or spacer when the snackbar is shown so that
-                    //  content doesn't display behind it.
+                    NiaNavHost(appState, Modifier.fillMaxSize())
                 }
             }
         }
