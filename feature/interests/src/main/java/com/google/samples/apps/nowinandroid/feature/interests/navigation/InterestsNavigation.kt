@@ -23,7 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.google.samples.apps.nowinandroid.feature.interests.InterestsRoute
 
-internal const val topicIdArg = "topicId"
+const val topicIdArg = "topicId"
 const val interestsRoute = "interests_route?$topicIdArg={$topicIdArg}"
 
 fun NavController.navigateToInterests(

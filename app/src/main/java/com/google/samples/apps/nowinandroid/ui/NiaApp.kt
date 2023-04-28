@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.ui
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -70,6 +71,7 @@ import com.google.samples.apps.nowinandroid.core.designsystem.icon.Icon.ImageVec
 import com.google.samples.apps.nowinandroid.core.designsystem.icon.NiaIcons
 import com.google.samples.apps.nowinandroid.core.designsystem.theme.GradientColors
 import com.google.samples.apps.nowinandroid.core.designsystem.theme.LocalGradientColors
+import com.google.samples.apps.nowinandroid.feature.search.navigation.navigateToSearch
 import com.google.samples.apps.nowinandroid.feature.settings.SettingsDialog
 import com.google.samples.apps.nowinandroid.navigation.NiaNavHost
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination
@@ -91,12 +93,9 @@ fun NiaApp(
         userNewsResourceRepository = userNewsResourceRepository,
     ),
 ) {
-    val shouldShowGradientBackground =
-        appState.currentTopLevelDestination == TopLevelDestination.FOR_YOU
-
     NiaBackground {
         NiaGradientBackground(
-            gradientColors = if (shouldShowGradientBackground) {
+            gradientColors = if (appState.shouldShowGradientBackground) {
                 LocalGradientColors.current
             } else {
                 GradientColors()
@@ -148,7 +147,7 @@ fun NiaApp(
                                 containerColor = Color.Transparent,
                             ),
                             onActionClick = { appState.setShowSettingsDialog(true) },
-                            onNavigationClick = { appState.navigateToSearch() },
+                            onNavigationClick = appState.navController::navigateToSearch,
                         )
                     }
                 },
@@ -159,7 +158,7 @@ fun NiaApp(
                             destinations = appState.topLevelDestinations,
                             destinationsWithUnreadResources = unreadDestinations,
                             onNavigateToDestination = appState::navigateToTopLevelDestination,
-                            currentDestination = appState.currentDestination,
+                            currentDestination = appState.currentBackStackEntry?.destination,
                             modifier = Modifier.testTag("NiaBottomBar"),
                         )
                     }
@@ -180,7 +179,7 @@ fun NiaApp(
                         NiaNavRail(
                             destinations = appState.topLevelDestinations,
                             onNavigateToDestination = appState::navigateToTopLevelDestination,
-                            currentDestination = appState.currentDestination,
+                            currentDestination = appState.currentBackStackEntry?.destination,
                             modifier = Modifier
                                 .testTag("NiaNavRail")
                                 .safeDrawingPadding(),

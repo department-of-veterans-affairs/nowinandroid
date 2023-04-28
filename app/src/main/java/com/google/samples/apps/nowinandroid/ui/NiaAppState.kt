@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.ui
 
+import android.os.Bundle
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -25,8 +26,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -42,7 +43,7 @@ import com.google.samples.apps.nowinandroid.feature.foryou.navigation.forYouNavi
 import com.google.samples.apps.nowinandroid.feature.foryou.navigation.navigateToForYou
 import com.google.samples.apps.nowinandroid.feature.interests.navigation.interestsRoute
 import com.google.samples.apps.nowinandroid.feature.interests.navigation.navigateToInterests
-import com.google.samples.apps.nowinandroid.feature.search.navigation.navigateToSearch
+import com.google.samples.apps.nowinandroid.feature.interests.navigation.topicIdArg
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination.BOOKMARKS
 import com.google.samples.apps.nowinandroid.navigation.TopLevelDestination.FOR_YOU
@@ -88,17 +89,25 @@ class NiaAppState(
     networkMonitor: NetworkMonitor,
     userNewsResourceRepository: UserNewsResourceRepository,
 ) {
-    val currentDestination: NavDestination?
+    val currentBackStackEntry: NavBackStackEntry?
         @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination
+            .currentBackStackEntryAsState().value
 
     val currentTopLevelDestination: TopLevelDestination?
-        @Composable get() = when (currentDestination?.route) {
-            forYouNavigationRoute -> FOR_YOU
-            bookmarksRoute -> BOOKMARKS
-            interestsRoute -> INTERESTS
-            else -> null
+        @Composable get() {
+            val route: String? = currentBackStackEntry?.destination?.route
+            val arguments: Bundle? = currentBackStackEntry?.arguments
+            return when {
+                route == forYouNavigationRoute -> FOR_YOU
+                route == bookmarksRoute -> BOOKMARKS
+                route == interestsRoute &&
+                    (arguments?.getString(topicIdArg) == null || shouldShowTwoPane) -> INTERESTS
+                else -> null
+            }
         }
+
+    val shouldShowGradientBackground: Boolean
+        @Composable get() = currentBackStackEntry?.destination?.route == forYouNavigationRoute
 
     var shouldShowSettingsDialog by mutableStateOf(false)
         private set
@@ -175,10 +184,6 @@ class NiaAppState(
 
     fun setShowSettingsDialog(shouldShow: Boolean) {
         shouldShowSettingsDialog = shouldShow
-    }
-
-    fun navigateToSearch() {
-        navController.navigateToSearch()
     }
 }
 
