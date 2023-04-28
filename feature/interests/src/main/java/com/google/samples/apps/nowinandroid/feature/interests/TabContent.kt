@@ -23,7 +23,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
@@ -36,27 +41,30 @@ fun TopicsTabContent(
     onTopicClick: (String) -> Unit,
     onFollowButtonClick: (String, Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    listState: LazyListState = rememberLazyListState(),
     withBottomSpacer: Boolean = true,
 ) {
     LazyColumn(
+        state = listState,
         modifier = modifier
             .padding(horizontal = 24.dp)
             .testTag("interests:topics"),
         contentPadding = PaddingValues(vertical = 16.dp),
     ) {
-        topics.forEach { followableTopic ->
+        items(
+            items = topics,
+            key = { item -> item.topic.id },
+        ) { followableTopic ->
             val topicId = followableTopic.topic.id
-            item(key = topicId) {
-                InterestsItem(
-                    isSelected = selectedTopicId == topicId,
-                    name = followableTopic.topic.name,
-                    following = followableTopic.isFollowed,
-                    description = followableTopic.topic.shortDescription,
-                    topicImageUrl = followableTopic.topic.imageUrl,
-                    onClick = { onTopicClick(topicId) },
-                    onFollowButtonClick = { onFollowButtonClick(topicId, it) },
-                )
-            }
+            InterestsItem(
+                isSelected = selectedTopicId == topicId,
+                name = followableTopic.topic.name,
+                following = followableTopic.isFollowed,
+                description = followableTopic.topic.shortDescription,
+                topicImageUrl = followableTopic.topic.imageUrl,
+                onClick = { onTopicClick(topicId) },
+                onFollowButtonClick = { onFollowButtonClick(topicId, it) },
+            )
         }
 
         if (withBottomSpacer) {

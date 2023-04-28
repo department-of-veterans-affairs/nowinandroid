@@ -16,6 +16,7 @@
 
 package com.google.samples.apps.nowinandroid.navigation
 
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,6 +45,7 @@ fun NiaNavHost(
     startDestination: String = forYouNavigationRoute,
 ) {
     val navController = appState.navController
+    val interestsScrollState = rememberLazyListState()
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -60,6 +62,7 @@ fun NiaNavHost(
             onTopicClick = navController::navigateToInterests,
         )
         interestsGraph(
+            listState = interestsScrollState,
             shouldShowTwoPane = appState.shouldShowTwoPane,
             onTopicClick = navController::navigateToInterests,
             onBackClick = navController::navigateToInterests,

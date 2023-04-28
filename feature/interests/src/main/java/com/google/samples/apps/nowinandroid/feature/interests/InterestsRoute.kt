@@ -17,6 +17,7 @@
 package com.google.samples.apps.nowinandroid.feature.interests
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -25,6 +26,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 internal fun InterestsRoute(
+    listState: LazyListState,
     shouldShowTwoPane: Boolean,
     onTopicClick: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -38,6 +40,7 @@ internal fun InterestsRoute(
         if(shouldShowTwoPane || topicUiState == null) {
             InterestsScreen(
                 uiState = interestUiState,
+                listState = listState,
                 followTopic = viewModel::followTopic,
                 onTopicClick = onTopicClick,
                 modifier = Modifier.weight(1f),
