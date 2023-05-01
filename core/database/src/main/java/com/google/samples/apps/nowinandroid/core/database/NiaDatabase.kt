@@ -59,7 +59,7 @@ import com.google.samples.apps.nowinandroid.core.database.util.NewsResourceTypeC
         AutoMigration(from = 12, to = 13),
         AutoMigration(from = 13, to = 14),
     ],
-    exportSchema = true,
+    exportSchema = false,
 )
 @TypeConverters(
     InstantConverter::class,
